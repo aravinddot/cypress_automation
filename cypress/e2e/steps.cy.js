@@ -35,16 +35,16 @@ describe('Sign Up', () => {
         })
     })
 
-    // it('Validate cart name and price', () => {
-    //     homePage.getApiResponse();
-    // });
+    it('Validate cart name and price', () => {
+        homePage.getApiResponse();
+    });
 
-    // it('validate each cart producat name and product price', () => {
-    //     homePage.validateEachCart();
-    // })
+    it('validate each cart producat name and product price', () => {
+        homePage.validateEachCart();
+    })
 
-    // it('verify each cart and validate', () => {
-    //     homePage.verifyEachCart();
-   // })
+    it('verify each cart and validate', () => {
+        homePage.verifyEachCart();
+   })
 })
 
