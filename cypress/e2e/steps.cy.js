@@ -46,5 +46,13 @@ describe('Sign Up', () => {
     it('verify each cart and validate', () => {
         homePage.verifyEachCart();
    })
+
+    // it('Validate cart name and cart price from DB', () => {
+
+    //    cy.task("select * from productDetails").then((dbResult)=>{
+    //     console.log(dbResult);
+    //    })
+    // });
+
 })
 
