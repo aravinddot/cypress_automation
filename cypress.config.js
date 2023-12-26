@@ -20,7 +20,8 @@ module.exports = defineConfig({
     },
     baseUrl: 'https://automationexercise.com/',
     specPattern: 'cypress/e2e/*.cy.js',
-    redirectionLimit: 50
+    redirectionLimit: 50,
+    pageLoadTimeout: 100000
   },
 });
 
