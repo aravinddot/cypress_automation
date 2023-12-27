@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "open": "cypress open",
-    "run": "cypress run"
+    "run": "cypress run",
+    "specFile" : "cypress run --headless --spec 'cypress/e2e/dataBase.cy.js'"
   },
   "author": "",
   "license": "ISC",
