@@ -6,12 +6,13 @@
   "scripts": {
     "open": "cypress open",
     "run": "cypress run",
-    "specFile" : "cypress run --headless --spec 'cypress/e2e/dataBase.cy.js'"
+    "specFile": "cypress run --headless --spec 'cypress/e2e/dataBase.cy.js'"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "cypress": "^13.6.1",
+    "cypress-mochawesome-reporter": "^3.8.0",
     "cypress-sql-server": "^1.0.0",
     "cypress-xpath": "^2.0.1",
     "mysql": "^2.18.1"

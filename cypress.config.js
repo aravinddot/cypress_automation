@@ -1,11 +1,36 @@
 const { defineConfig } = require("cypress");
 const mysql = require("mysql");
+const { beforeRunHook, afterRunHook } = require('cypress-mochawesome-reporter/lib');
 
 module.exports = defineConfig({
+  reporter: 'cypress-mochawesome-reporter',
+  reporterOptions: {
+    charts: true,
+    reportPageTitle: 'custom-title',
+    embeddedScreenshots: true,
+    ignoreVideos: false,
+    videoOnFailOnly: true,
+    inlineAssets: true,
+    saveAllAttempts: false,
+    debug: true,
+  },
   e2e: {
     setupNodeEvents(on, config) {
+      // require plugin
+      require('cypress-mochawesome-reporter/plugin')(on);
+      on('before:run', async (details) => {
+        console.log('override before:run');
+        await beforeRunHook(details);
+      });
+      on('after:run', async () => {
+        console.log('override after:run');
+        await afterRunHook();
+      });
+
+      // db connection
       on("task", {
         queryDb: (query) => {
+          console.log(query);
           return queryTestDb(query, config)
         },
       });
@@ -18,6 +43,7 @@ module.exports = defineConfig({
         database: "mydemo"
       }
     },
+
     baseUrl: 'https://automationexercise.com/',
     specPattern: 'cypress/e2e/*.cy.js',
     redirectionLimit: 50,
@@ -42,3 +68,4 @@ function queryTestDb(query, config) {
     });
   });
 }
+
