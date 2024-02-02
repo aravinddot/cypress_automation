@@ -4,3 +4,5 @@
 *.log
 *.orig
 /cypress/reports/
+# Allure
+allure-report
