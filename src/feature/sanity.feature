@@ -11,6 +11,13 @@ Feature: Sanity Testing
 		Given Verify each cart css background colour and get the each cart overlayed content
 		Then Verify the overlayed content with actual cart name, cart price and add to cart option
 
+	 Scenario: Get the brand count and validate the brand counts values
+        Given Verify the brand count in homepage
+
+    Scenario: Grab the side section sub category names and verify
+        Given Select side section category name and grab the sub category name
+        Then Get the side section sub category names from category
+
 
 	
 

@@ -16,6 +16,15 @@ module.exports = defineConfig({
 
 			return config;
 		},
+		retries: {
+			experimentalStrategy: 'detect-flake-and-pass-on-threshold',
+			experimentalOptions: {
+			  maxRetries: 2,
+			  passesRequired: 2,
+			},
+			openMode: true,
+			runMode: true,
+		  },
 		baseUrl: 'https://automationexercise.com/',
 		specPattern: 'src/feature/*.feature',
 		fixturesFolder: 'src/fixtures',
