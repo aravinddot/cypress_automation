@@ -14,7 +14,8 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-import './commands'
+import './command'
+import './sanityCustomCommands'
 import "cypress-real-events";
 require('cypress-xpath');
 /// <reference types="Cypress" />
