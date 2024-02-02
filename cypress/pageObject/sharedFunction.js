@@ -19,6 +19,16 @@ export class SharedFunctions {
     static getIdValue(key){
         return this.idVals[key];
     }
+
+    static loadTextValues() {
+        cy.fixture("texts.json").then((data) => {
+            this.textVals = data;
+        });
+    }
+
+    static getTextValue(key){
+        return this.textVals[key];
+    }
 }
 
 export default SharedFunctions;

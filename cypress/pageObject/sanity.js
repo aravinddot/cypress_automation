@@ -3,6 +3,12 @@ import productDetails from "./productDetails.js";
 import SharedFunctions from "./sharedFunction.js";
 import "cypress-real-events";
 
+// before(()=>{
+//     cy.fixture('texts.json').then((text)=>{
+//         this.text = text
+//     });
+// })
+
 export class sanityTesting extends productDetails {
 
     addTwoCartsAndRemove() {
@@ -26,9 +32,9 @@ export class sanityTesting extends productDetails {
     }
 
     getEachCartHoveredContentText(index) {
-            return cy.xpath(SharedFunctions.getXPathValue('hoveredContentXpath')).eq(index).should('be.visible').invoke('text').then((text) => {
-                const cleanedText = text.trim().split('\n').map(item => item.trim()).filter(item => item !== '');
-                return cleanedText
+        return cy.xpath(SharedFunctions.getXPathValue('hoveredContentXpath')).eq(index).should('be.visible').invoke('text').then((text) => {
+            const cleanedText = text.trim().split('\n').map(item => item.trim()).filter(item => item !== '');
+            return cleanedText
         })
 
     }
@@ -40,7 +46,7 @@ export class sanityTesting extends productDetails {
                 let count = attr.length
                 for (let index = 0; index < count; index++) {
                     this.hoverEachCartAndVerifyHoverColour(index)
-                    this.getEachCartHoveredContentText(index).then((text)=>{
+                    this.getEachCartHoveredContentText(index).then((text) => {
                         HoveredCartContextText.push(text)
                     })
                 }
@@ -51,11 +57,32 @@ export class sanityTesting extends productDetails {
 
     verifyTheOverlayedContentTextInActualCart() {
         const verifyContextText = dataMap.get('HoveredCartContextText')
-        verifyContextText.forEach((verifyTextArray, index)=>{
-                cy.xpath(SharedFunctions.getXPathValue('productPrice')).eq(index).should('be.visible').should('have.text', verifyTextArray[0])
-                cy.xpath(SharedFunctions.getXPathValue('productName')).eq(index).should('be.visible').should('have.text', verifyTextArray[1])
-                cy.xpath(SharedFunctions.getXPathValue('addToCartText')).eq(index).should('be.visible').should('contain', verifyTextArray[2])
+        verifyContextText.forEach((verifyTextArray, index) => {
+            cy.xpath(SharedFunctions.getXPathValue('productPrice')).eq(index).should('be.visible').should('have.text', verifyTextArray[0])
+            cy.xpath(SharedFunctions.getXPathValue('productName')).eq(index).should('be.visible').should('have.text', verifyTextArray[1])
+            cy.xpath(SharedFunctions.getXPathValue('addToCartText')).eq(index).should('be.visible').should('contain', verifyTextArray[2])
         })
+    }
+
+    verifyHeadingHomepage() {
+        cy.xpath("//div[@class='carousel-inner']//div//div//h1").should('be.visible')
+            .and('contain', SharedFunctions.getTextValue('headingHomepage'))
+    }
+
+    verifySubHeadingHomepage() {
+        cy.xpath("//div[@class='carousel-inner']//div//div//h2").should('be.visible')
+            .and('contain', SharedFunctions.getTextValue('subHeadingHomepage'))
+    }
+
+    verifyParagraphHomepage() {
+        cy.xpath("//div[@class='carousel-inner']//div//div//p").should('be.visible')
+            .and('contain', SharedFunctions.getTextValue('paragraphHomepage'))
+    }
+
+    verifyTheButtonTextHomepage(text) {
+        cy.xpath("//div[@class='carousel-inner']//div//div//a//button").should('be.visible')
+            .and('contain', text)
+
     }
 
 }

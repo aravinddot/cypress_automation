@@ -15,6 +15,7 @@ beforeEach(() => {
 before(() => {
     SharedFunctions.loadXPathValues();
     SharedFunctions.loadIdValues();
+    SharedFunctions.loadTextValues();
 })
 
     Given('Verify the logged in name in homepage', () => {

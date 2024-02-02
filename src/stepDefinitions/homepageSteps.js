@@ -18,6 +18,7 @@ beforeEach(() => {
 before(() => {
     SharedFunctions.loadXPathValues();
     SharedFunctions.loadIdValues();
+    SharedFunctions.loadTextValues();
     Login.loginPage('ThirdUser');
 })
 
