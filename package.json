@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "cy-open": "cypress open",
-    "cy-regression": "cypress run --spec src/feature/*.feature"
+    "cy-regressionAll": "cypress run --spec src/feature/*.feature",
+    "cy-login": "cypress run --spec src/feature/login.feature",
+    "cy-sanity": "cypress run --spec src/feature/sanity.feature",
+    "cy-regression": "cypress run --spec src/feature/homepage.feature"
   },
   "author": "",
   "license": "ISC",
