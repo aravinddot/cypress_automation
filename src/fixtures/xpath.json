@@ -34,8 +34,11 @@
   "productsCategories": "//div[@class='breadcrumbs']//li[@class='active']",
   "productTitle": "//h2[@class='title text-center']",
   "hoverSingleCartXpath": "//div[@class='productinfo text-center']",
-  "hoveredContentXpath": "//div[@class='overlay-content']"
-
+  "hoveredContentXpath": "//div[@class='overlay-content']",
+  "headersCommonXpath": "//ul[@class='nav navbar-nav']//a",
+  "proceedToCheckoutBtn": "//div[@class='col-sm-6']//a",
+  "addressDetails": "//ul[@id='address_delivery']//li",
+  "addressInvoiceDetails": "//ul[@id='address_invoice']//li"
 
 
 }

@@ -3,12 +3,6 @@ import productDetails from "./productDetails.js";
 import SharedFunctions from "./sharedFunction.js";
 import "cypress-real-events";
 
-// before(()=>{
-//     cy.fixture('texts.json').then((text)=>{
-//         this.text = text
-//     });
-// })
-
 export class sanityTesting extends productDetails {
 
     addTwoCartsAndRemove() {

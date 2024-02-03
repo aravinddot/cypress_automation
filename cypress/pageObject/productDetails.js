@@ -134,6 +134,148 @@ export class productDetails extends newPage {
         })
     }
 
+    writeValuesInJsonFile() {
+        const header = dataMap.get('pageHeaderNames')
+        const category = dataMap.get('categoryName')
+        const brand = dataMap.get('brandName')
+        const subCategoryWomen = dataMap.get('Women')
+        const subCategoryMen = dataMap.get('Men')
+        const subCategoryKids = dataMap.get('Kids')
+        cy.writeFile('src/fixtures/writeFile.json',
+            {
+                header: header,
+                category: category,
+                brand: brand,
+                Women: subCategoryWomen,
+                Men: subCategoryMen,
+                Kids: subCategoryKids
+            })
+    }
+
+    readTheHeaderValuesFromStoredJsonFile() {
+        cy.readFile('src/fixtures/writeFile.json').then((headerValues) => {
+            const header = headerValues.header
+            console.log(header);
+            for (let i = 0; i < header.length; i++) {
+                cy.xpath(SharedFunctions.getXPathValue('pageHeader')).eq(i).should('have.text', header[i])
+            }
+        })
+    }
+
+
+    readTheCategoryValuesFromStoredJsonFile() {
+        cy.readFile('src/fixtures/writeFile.json').then((categoryValues) => {
+            const category = categoryValues.category
+            for (let index = 0; index < category.length; index++) {
+                cy.verifyTextContains(SharedFunctions.getXPathValue('categoryName'), index, category[index])
+                const subCategories = categoryValues[category[index]]
+                console.log('category==>' + subCategories);
+                cy.xpath(SharedFunctions.getXPathValue('categoryIcon')).eq(index).should('be.visible').click({ force: true })
+                subCategories.forEach((subCategory) => {
+                    cy.xpath("//div[@id='" + category[index] + "']//a[contains(text(),'" + subCategory + "')]").should('be.visible')
+                        .and('contain', subCategory)
+                });
+                cy.reload();
+            }
+        });
+    }
+
+    readTheBrandValuesFromStoredJsonFile() {
+        cy.readFile('src/fixtures/writeFile.json').then((brandValues) => {
+            const brands = brandValues.brand
+            for (let index = 0; index < brands.length; index++) {
+                cy.verifyTextContains(SharedFunctions.getXPathValue('brandName'), index, brands[index])
+            }
+        })
+    }
+
+    grabAllCartNamePrice() {
+        const cartName = []
+        const cartPrice = []
+        cy.xpathIsVisible(SharedFunctions.getXPathValue('singleCartXpath')).then((attrCount) => {
+            for (let i = 0; i < attrCount.length; i++) {
+                cy.xpath(SharedFunctions.getXPathValue('productName')).eq(i).should('be.visible').invoke('text').then((name) => {
+                    cy.xpath(SharedFunctions.getXPathValue('productPrice')).eq(i).should('be.visible').invoke('text').then((price) => {
+                        cartName.push(name)
+                        cartPrice.push(price)
+                    });
+                });
+            }
+            cy.writeFile('src/fixtures/writeFile.json',
+                {
+                    count: attrCount.length,
+                    itemName: cartName,
+                    itemPrice: cartPrice
+                })
+        })
+    }
+
+    getCartNamePriceRandomly() {
+        cy.readFile('src/fixtures/writeFile.json').then((val) => {
+            const count = val.count
+            const cartName = val.itemName
+            const cartPrice = val.itemPrice
+            this.randomNumbers(count).then((randNum) => {
+                randNum.forEach((num) => {
+                    cy.xpath(SharedFunctions.getXPathValue('singleCartXpath')).eq(num).should('be.visible')
+                        .and('contain', cartName[num], cartPrice[num]).contains('Add to cart').click({ force: true })
+                    this.firstCartAdded();
+                    this.continueShoppingButton();
+                })
+                dataMap.set('randomNumber', randNum)
+            })
+        })
+    }
+
+    cartPageIsVisible() {
+        cy.url().should('include', 'https://automationexercise.com/view_cart')
+    }
+
+    verifyCartNamePriceTotalAmount() {
+        const randNum = dataMap.get('randomNumber')
+        const repeatedValues = randNum.filter((value, index, array) => array.indexOf(value) !== index);
+        console.log('repeatedValues===>' + repeatedValues);
+        cy.readFile('src/fixtures/writeFile.json').then((jsonVal) => {
+            const itemName = jsonVal.itemName
+            const itemPrice = jsonVal.itemPrice
+            randNum.forEach((num, index) => {
+                cy.xpathIsVisible("//table[@id='cart_info_table']//tr/td//h4//a").eq(index).should('have.text', itemName[num])
+                cy.xpathIsVisible("//table[@id='cart_info_table']//tr/td[@class='cart_price']//p").eq(index).should('have.text', itemPrice[num])
+            })
+        })
+    }
+
+    verifyAddressDetails(text) {
+        if(text == 'delivery address'){
+            cy.xpath(SharedFunctions.getXPathValue('addressDetails')).should('be.visible')
+            .and('contain', Cypress.env('address').yourAddress)
+        cy.xpath(SharedFunctions.getXPathValue('addressDetails'))
+            .should('be.visible').and('contain', Cypress.env('address').name)
+        cy.xpath(SharedFunctions.getXPathValue('addressDetails'))
+            .should('be.visible').and('contain', Cypress.env('address').address1)
+        cy.xpath(SharedFunctions.getXPathValue('addressDetails'))
+            .should('be.visible').contains( Cypress.env('address').cityState)
+        cy.xpath(SharedFunctions.getXPathValue('addressDetails'))
+            .should('be.visible').and('contain', Cypress.env('address').country)
+        cy.xpath(SharedFunctions.getXPathValue('addressDetails'))
+            .should('be.visible').and('contain', Cypress.env('address').contactNo)
+        } else {
+            cy.xpath(SharedFunctions.getXPathValue('addressInvoiceDetails')).should('be.visible')
+            .and('contain', Cypress.env('addressInvoice').yourAddress)
+        cy.xpath(SharedFunctions.getXPathValue('addressInvoiceDetails'))
+            .should('be.visible').and('contain', Cypress.env('addressInvoice').name)
+        cy.xpath(SharedFunctions.getXPathValue('addressInvoiceDetails'))
+            .should('be.visible').and('contain', Cypress.env('addressInvoice').address1)
+        cy.xpath(SharedFunctions.getXPathValue('addressInvoiceDetails'))
+            .should('be.visible').contains( Cypress.env('addressInvoice').cityState)
+        cy.xpath(SharedFunctions.getXPathValue('addressInvoiceDetails'))
+            .should('be.visible').and('contain', Cypress.env('addressInvoice').country)
+        cy.xpath(SharedFunctions.getXPathValue('addressInvoiceDetails'))
+            .should('be.visible').and('contain', Cypress.env('addressInvoice').contactNo)
+        }
+    }
+
+
 }
 
 export default productDetails

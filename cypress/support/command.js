@@ -144,6 +144,10 @@ Cypress.Commands.add('elementExists', (element)=>{
     cy.xpath(xpath).should('exist')
 })
 
+Cypress.Commands.add("ifXPathExist", (xpath) => {
+    return cy.xpath('count(' + xpath + ')')
+})
+
 
 
 

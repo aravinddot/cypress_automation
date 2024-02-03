@@ -8,7 +8,8 @@
     "cy-regressionAll": "cypress run --spec src/feature/*.feature",
     "cy-login": "cypress run --browser chrome --spec src/feature/login.feature",
     "cy-sanity": "cypress run --browser chrome --spec src/feature/sanity.feature",
-    "cy-regression": "cypress run --browser chrome --spec src/feature/homepage.feature"
+    "cy-regression": "cypress run --browser chrome --spec src/feature/homepage.feature",
+    "cy-product": "cypress run --browser chrome --spec src/feature/product.feature"
   },
   "author": "",
   "license": "ISC",
