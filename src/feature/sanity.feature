@@ -5,7 +5,11 @@ Feature: Sanity Testing
 		Then Verify the homepage section
 
 	Scenario: Add two carts and Delete the two carts
-		Given Add two cart and verify and validate the two carts
+		Given Click on the 'Cart' option in homepage
+		When Verify the cart is empty in cart page
+		And Click on the 'Home' option in homepage
+		Then Add two cart and verify and validate the two carts
+
 
 	Scenario: Verify the cart is hover and showing correct cart name and price
 		Given Verify each cart css background colour and get the each cart overlayed content
