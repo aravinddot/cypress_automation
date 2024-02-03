@@ -59,6 +59,10 @@ export class utility {
         cy.url().should('include', 'https://automationexercise.com/view_cart')
     }
 
+    verifyCartIsEmpty() {
+        return cy.xpath(SharedFunctions.getXPathValue('cartIsEmptyText')).contains('Cart is empty!').should('be.visible');
+    }
+
     randomNumbers(count) {
         return cy.wrap(null).then(() => {
             const randomNumber = []
