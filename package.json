@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "cy-open": "cypress open",
+    "cy-run": "cypress run",
     "cy-regressionAll": "cypress run --spec src/feature/*.feature",
     "cy-login": "cypress run --browser chrome --spec src/feature/login.feature",
     "cy-sanity": "cypress run --browser chrome --spec src/feature/sanity.feature",
