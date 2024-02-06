@@ -79,13 +79,11 @@ export class productDetails extends newPage {
         for (let i = 0; i < jsonKey.length; i++) {
             const randomKey = jsonKey[Math.floor(Math.random() * jsonKey.length)];
             const searchValue = Cypress.env('searchProduct')[randomKey]
-            console.log(searchValue);
             cy.clickOnText(SharedFunctions.getXPathValue('productBtn'), 'Products')
             cy.enterValue(SharedFunctions.getIdValue('searchProduct'), searchValue)
             cy.clickOnButton(SharedFunctions.getIdValue('submitSearch'))
             cy.xpathIsVisible(SharedFunctions.getXPathValue('singleCartXpath')).then((attrCount) => {
                 for (let i = 0; i <= attrCount.length; i++) {
-                    console.log(i);
                     cy.xpath(SharedFunctions.getXPathValue('productName')).eq(i - 1).should('be.visible').contains(searchValue, { matchCase: false })
                 }
             });
@@ -111,7 +109,6 @@ export class productDetails extends newPage {
             cy.clickOnButton(SharedFunctions.getIdValue('submitSearch'))
             cy.xpathIsVisible(SharedFunctions.getXPathValue('singleCartXpath')).then((attrCount) => {
                 for (let i = 0; i <= attrCount.length; i++) {
-                    console.log(i);
                     cy.xpath(SharedFunctions.getXPathValue('productName')).eq(i - 1).should('be.visible').contains(searchValue, { matchCase: false })
                 }
             });
@@ -121,14 +118,12 @@ export class productDetails extends newPage {
     brandCount() {
         let count = null
         const brandName = dataMap.get('brandName')
-        console.log(brandName);
         brandName.forEach((brandNames, index) => {
             cy.clickOnText(SharedFunctions.getXPathValue('brandName'), brandNames)
             cy.xpathIsVisible(SharedFunctions.getXPathValue('singleCartXpath')).then((attrCount) => {
                 for (let i = 0; i <= attrCount.length; i++) {
                     count = "(" + i + ")"
                 }
-                console.log(count);
                 cy.xpath(SharedFunctions.getXPathValue('brandCount')).eq(index).should('be.visible').and('have.text', count)
             });
         })
@@ -155,7 +150,6 @@ export class productDetails extends newPage {
     readTheHeaderValuesFromStoredJsonFile() {
         cy.readFile('src/fixtures/writeFile.json').then((headerValues) => {
             const header = headerValues.header
-            console.log(header);
             for (let i = 0; i < header.length; i++) {
                 cy.xpath(SharedFunctions.getXPathValue('pageHeader')).eq(i).should('have.text', header[i])
             }
@@ -169,7 +163,6 @@ export class productDetails extends newPage {
             for (let index = 0; index < category.length; index++) {
                 cy.verifyTextContains(SharedFunctions.getXPathValue('categoryName'), index, category[index])
                 const subCategories = categoryValues[category[index]]
-                console.log('category==>' + subCategories);
                 cy.xpath(SharedFunctions.getXPathValue('categoryIcon')).eq(index).should('be.visible').click({ force: true })
                 subCategories.forEach((subCategory) => {
                     cy.xpath("//div[@id='" + category[index] + "']//a[contains(text(),'" + subCategory + "')]").should('be.visible')
@@ -210,13 +203,16 @@ export class productDetails extends newPage {
         })
     }
 
-    getCartNamePriceRandomly() {
+
+    getCartNamePriceRandomly(howManyCarts) {
         cy.readFile('src/fixtures/writeFile.json').then((val) => {
             const count = val.count
             const cartName = val.itemName
             const cartPrice = val.itemPrice
-            this.randomNumbers(count).then((randNum) => {
+            this.randomNumbers(count, howManyCarts).then((randNum) => {
+                //let randNum = [23, 6, 6, 23, 3, 3, 4, 5, 7, 7]
                 randNum.forEach((num) => {
+                    cy.wait(500)
                     cy.xpath(SharedFunctions.getXPathValue('singleCartXpath')).eq(num).should('be.visible')
                         .and('contain', cartName[num], cartPrice[num]).contains('Add to cart').click({ force: true })
                     this.firstCartAdded();
@@ -231,48 +227,119 @@ export class productDetails extends newPage {
         cy.url().should('include', 'https://automationexercise.com/view_cart')
     }
 
+    findRepeatedValues(array) {
+        const frequencyMap = {};
+        const repeatedValues = [];
+        array.forEach((element) => {
+            if (frequencyMap[element] === undefined) {
+                frequencyMap[element] = 1;
+              } else {
+                repeatedValues.push(element);
+                frequencyMap[element]++;
+              }
+        });
+        return repeatedValues;
+    }
+
+    countOccurrences(array) {
+        const countMap = {};
+        array.forEach(value => {
+            if (countMap[value]) {
+                countMap[value]++;
+            } else {
+                countMap[value] = 1;
+            }
+        });
+        return countMap
+    }
+
     verifyCartNamePriceTotalAmount() {
+        const totalAmount = []
         const randNum = dataMap.get('randomNumber')
-        const repeatedValues = randNum.filter((value, index, array) => array.indexOf(value) !== index);
-        console.log('repeatedValues===>' + repeatedValues);
+        const repeatedValues = this.findRepeatedValues(randNum)
+        const indexOfRepeatedValue = randNum.indexOf(repeatedValues[0])
+        const noRepeatedValues = [...new Set(randNum)];
+        const quantity = this.countOccurrences(randNum)
         cy.readFile('src/fixtures/writeFile.json').then((jsonVal) => {
             const itemName = jsonVal.itemName
             const itemPrice = jsonVal.itemPrice
-            randNum.forEach((num, index) => {
-                cy.xpathIsVisible("//table[@id='cart_info_table']//tr/td//h4//a").eq(index).should('have.text', itemName[num])
-                cy.xpathIsVisible("//table[@id='cart_info_table']//tr/td[@class='cart_price']//p").eq(index).should('have.text', itemPrice[num])
+            noRepeatedValues.forEach((num, index) => {
+                if (repeatedValues.includes(num)) {
+                    cy.xpathIsVisible(SharedFunctions.getXPathValue('cartPageCartName')).eq(indexOfRepeatedValue).should('have.text', itemName[num])
+                    cy.xpathIsVisible(SharedFunctions.getXPathValue('cartPageCartPrice')).eq(indexOfRepeatedValue).should('have.text', itemPrice[num])
+                    cy.xpathIsVisible(SharedFunctions.getXPathValue('cartPageCartQuantity')).eq(indexOfRepeatedValue).should('contain', quantity[num])
+                    const totalQuantity = quantity[num]
+                    if (totalQuantity > 1) {
+                        const replacePrice = itemPrice[num].replace(/\D/g, '')
+                        const totalNum = replacePrice * quantity[num]
+                        cy.xpathIsVisible(SharedFunctions.getXPathValue('cartPageCartPrice2')).eq(indexOfRepeatedValue).should('contain', totalNum)
+                            .invoke('text').then((amountVal1) => {
+                                totalAmount.push(amountVal1)
+                            })
+                    }
+                    else {
+                        cy.xpathIsVisible(SharedFunctions.getXPathValue('cartPageCartPrice2')).eq(indexOfRepeatedValue).should('have.text', itemPrice[num])
+                            .invoke('text').then((amountVal1) => {
+                                totalAmount.push(amountVal1)
+                            })
+                    }
+                } else {
+                    cy.xpathIsVisible(SharedFunctions.getXPathValue('cartPageCartName')).eq(index).should('have.text', itemName[num])
+                    cy.xpathIsVisible(SharedFunctions.getXPathValue('cartPageCartPrice')).eq(index).should('have.text', itemPrice[num])
+                    cy.xpathIsVisible(SharedFunctions.getXPathValue('cartPageCartQuantity')).eq(index).should('contain', quantity[num])
+                    cy.xpathIsVisible(SharedFunctions.getXPathValue('cartPageCartPrice2')).eq(index).should('have.text', itemPrice[num])
+                        .invoke('text').then((amountVal2) => {
+                            totalAmount.push(amountVal2)
+                        })
+                }
             })
+            dataMap.set('cartAddedTotalAmount', totalAmount)
         })
     }
 
     verifyAddressDetails(text) {
-        if(text == 'delivery address'){
+        if (text == 'delivery address') {
             cy.xpath(SharedFunctions.getXPathValue('addressDetails')).should('be.visible')
-            .and('contain', Cypress.env('address').yourAddress)
-        cy.xpath(SharedFunctions.getXPathValue('addressDetails'))
-            .should('be.visible').and('contain', Cypress.env('address').name)
-        cy.xpath(SharedFunctions.getXPathValue('addressDetails'))
-            .should('be.visible').and('contain', Cypress.env('address').address1)
-        cy.xpath(SharedFunctions.getXPathValue('addressDetails'))
-            .should('be.visible').contains( Cypress.env('address').cityState)
-        cy.xpath(SharedFunctions.getXPathValue('addressDetails'))
-            .should('be.visible').and('contain', Cypress.env('address').country)
-        cy.xpath(SharedFunctions.getXPathValue('addressDetails'))
-            .should('be.visible').and('contain', Cypress.env('address').contactNo)
+                .and('contain', Cypress.env('address').yourAddress)
+            cy.xpath(SharedFunctions.getXPathValue('addressDetails'))
+                .should('be.visible').and('contain', Cypress.env('address').name)
+            cy.xpath(SharedFunctions.getXPathValue('addressDetails'))
+                .should('be.visible').and('contain', Cypress.env('address').address1)
+            cy.xpath(SharedFunctions.getXPathValue('addressDetails'))
+                .should('be.visible').contains(Cypress.env('address').cityState)
+            cy.xpath(SharedFunctions.getXPathValue('addressDetails'))
+                .should('be.visible').and('contain', Cypress.env('address').country)
+            cy.xpath(SharedFunctions.getXPathValue('addressDetails'))
+                .should('be.visible').and('contain', Cypress.env('address').contactNo)
         } else {
             cy.xpath(SharedFunctions.getXPathValue('addressInvoiceDetails')).should('be.visible')
-            .and('contain', Cypress.env('addressInvoice').yourAddress)
-        cy.xpath(SharedFunctions.getXPathValue('addressInvoiceDetails'))
-            .should('be.visible').and('contain', Cypress.env('addressInvoice').name)
-        cy.xpath(SharedFunctions.getXPathValue('addressInvoiceDetails'))
-            .should('be.visible').and('contain', Cypress.env('addressInvoice').address1)
-        cy.xpath(SharedFunctions.getXPathValue('addressInvoiceDetails'))
-            .should('be.visible').contains( Cypress.env('addressInvoice').cityState)
-        cy.xpath(SharedFunctions.getXPathValue('addressInvoiceDetails'))
-            .should('be.visible').and('contain', Cypress.env('addressInvoice').country)
-        cy.xpath(SharedFunctions.getXPathValue('addressInvoiceDetails'))
-            .should('be.visible').and('contain', Cypress.env('addressInvoice').contactNo)
+                .and('contain', Cypress.env('addressInvoice').yourAddress)
+            cy.xpath(SharedFunctions.getXPathValue('addressInvoiceDetails'))
+                .should('be.visible').and('contain', Cypress.env('addressInvoice').name)
+            cy.xpath(SharedFunctions.getXPathValue('addressInvoiceDetails'))
+                .should('be.visible').and('contain', Cypress.env('addressInvoice').address1)
+            cy.xpath(SharedFunctions.getXPathValue('addressInvoiceDetails'))
+                .should('be.visible').contains(Cypress.env('addressInvoice').cityState)
+            cy.xpath(SharedFunctions.getXPathValue('addressInvoiceDetails'))
+                .should('be.visible').and('contain', Cypress.env('addressInvoice').country)
+            cy.xpath(SharedFunctions.getXPathValue('addressInvoiceDetails'))
+                .should('be.visible').and('contain', Cypress.env('addressInvoice').contactNo)
         }
+    }
+
+    verifyTotalCartAmount() {
+        const totalAmount = dataMap.get('cartAddedTotalAmount')
+        const totalPrice = totalAmount.reduce((sum, price) => {
+            const numericalValue = parseInt(price.split(' ')[1]);
+            return sum + numericalValue;
+        }, 0);
+        cy.xpathIsVisible("//p[normalize-space()='Rs. " + totalPrice + "']").should('have.text', 'Rs. ' + totalPrice)
+    }
+
+    verifyTextAndClickPlaceOrder() {
+        cy.xpathIsVisible("//div[@id='ordermsg']//label")
+            .should('contain', 'If you would like to add a comment about your order, please write it in the field below.')
+        cy.xpathIsVisible("//div//a[@class='btn btn-default check_out']").should('contain', 'Place Order').click({ force: true })
     }
 
 

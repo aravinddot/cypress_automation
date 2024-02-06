@@ -24,13 +24,13 @@ Feature: Product
 
      Scenario: Grab the cart name and cart price in products page randomly and validating
         Given Click on the 'Products' option in homepage
-        And Grab the all cart name and cart price in products page and store the values
-        #When Get the cart name and price randomly and store the values in json file
-        And Get the cart name and price values from json file and perform add to cart
+        And Verify all the cart and select carts randomly 
+        And Select the cart randomly and perform add to cart actions "15"
         And Click on the 'Cart' option in homepage
         And Verify the cart page is visible properly
         And Verify the cart names, cart price and total amount
         And Click on procced to checkout
         And Verify the 'delivery address' details
         And Verify the 'billing address' details
-# Then Click on place order button
+        And Verify total amount of the cart added
+        Then Click on place order button

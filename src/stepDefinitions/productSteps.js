@@ -43,12 +43,12 @@ When('Click on the {string} option in homepage', (text)=>{
     util.clickHeaderText(text);
 });
 
-Given('Grab the all cart name and cart price in products page and store the values', ()=>{
-    ProductDetails.grabAllCartNamePrice();
+Given('Verify all the cart and select carts randomly', (carts)=>{
+    ProductDetails.grabAllCartNamePrice(carts);
 });
 
-When('Get the cart name and price values from json file and perform add to cart', ()=>{
-    ProductDetails.getCartNamePriceRandomly();
+When('Select the cart randomly and perform add to cart actions {string}', (howManyCarts)=>{
+    ProductDetails.getCartNamePriceRandomly(howManyCarts);
 });
 
 
@@ -70,5 +70,13 @@ When('Verify the cart is empty in cart page', ()=>{
 
 When('Verify the {string} details', (text)=>{
     ProductDetails.verifyAddressDetails(text);
+});
+
+When('Verify total amount of the cart added', (text)=>{
+    ProductDetails.verifyTotalCartAmount(text);
+});
+
+Then('Click on place order button', ()=>{
+    ProductDetails.verifyTextAndClickPlaceOrder();
 });
 

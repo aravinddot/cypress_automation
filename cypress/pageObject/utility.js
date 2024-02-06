@@ -63,10 +63,10 @@ export class utility {
         return cy.xpath(SharedFunctions.getXPathValue('cartIsEmptyText')).contains('Cart is empty!').should('be.visible');
     }
 
-    randomNumbers(count) {
+    randomNumbers(count, howManyCarts) {
         return cy.wrap(null).then(() => {
             const randomNumber = []
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < howManyCarts; i++) {
                 let randNum = Math.floor(Math.random() * count); // Generates a random number between 0 and 34
                 randomNumber.push(randNum)
             }
@@ -88,6 +88,7 @@ export class utility {
             } else {
                 return cy.xpath(SharedFunctions.getXPathValue('cartIsEmptyText')).contains('Cart is empty!').should('be.visible');
             }
+            cy.xpath(SharedFunctions.getXPathValue('cartIsEmptyText')).contains('Cart is empty!').should('be.visible');
         })
     }
 
