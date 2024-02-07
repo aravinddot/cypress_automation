@@ -16,15 +16,15 @@ module.exports = defineConfig({
 
 			return config;
 		},
-		// retries: {
-		// 	experimentalStrategy: 'detect-flake-and-pass-on-threshold',
-		// 	experimentalOptions: {
-		// 	  maxRetries: 2,
-		// 	  passesRequired: 2,
-		// 	},
-		// 	openMode: true,
-		// 	runMode: true,
-		//   },
+		retries: {
+			experimentalStrategy: 'detect-flake-and-pass-on-threshold',
+			experimentalOptions: {
+			  maxRetries: 2,
+			  passesRequired: 2,
+			},
+			openMode: true,
+			runMode: true,
+		  },
 		baseUrl: 'https://automationexercise.com/',
 		specPattern: 'src/feature/*.feature',
 		fixturesFolder: 'src/fixtures',
@@ -33,7 +33,7 @@ module.exports = defineConfig({
 		defaultCommandTimeout: 60000,
 		execTimeout: 60000,
 		pageLoadTimeout: 60000,
-		viewportHeight: 1080,
-		viewportWidth: 1920,
+		viewportHeight: 720,
+		viewportWidth: 1280,
 	},
 });

@@ -1,5 +1,6 @@
 import SharedFunctions from "../pageObject/sharedFunction.js";
 import newPage, { dataMap } from "../pageObject/newHomePage.js";
+import { loginMap } from "./login.js";
 
 
 export class productDetails extends newPage {
@@ -233,10 +234,10 @@ export class productDetails extends newPage {
         array.forEach((element) => {
             if (frequencyMap[element] === undefined) {
                 frequencyMap[element] = 1;
-              } else {
+            } else {
                 repeatedValues.push(element);
                 frequencyMap[element]++;
-              }
+            }
         });
         return repeatedValues;
     }
@@ -298,32 +299,41 @@ export class productDetails extends newPage {
     }
 
     verifyAddressDetails(text) {
+        const user = loginMap.get('userType')
         if (text == 'delivery address') {
             cy.xpath(SharedFunctions.getXPathValue('addressDetails')).should('be.visible')
-                .and('contain', Cypress.env('address').yourAddress)
+                .and('contain', 'Your delivery address')
             cy.xpath(SharedFunctions.getXPathValue('addressDetails'))
-                .should('be.visible').and('contain', Cypress.env('address').name)
+                .should('be.visible').and('contain', `Mr. ${Cypress.env("signUpUserDetails")[user].firstName} ${Cypress.env("signUpUserDetails")[user].lastName}`)
             cy.xpath(SharedFunctions.getXPathValue('addressDetails'))
-                .should('be.visible').and('contain', Cypress.env('address').address1)
+                .should('be.visible').and('contain', `${Cypress.env("signUpUserDetails")[user].comapany}`)
             cy.xpath(SharedFunctions.getXPathValue('addressDetails'))
-                .should('be.visible').contains(Cypress.env('address').cityState)
+                .should('be.visible').and('contain', `${Cypress.env("signUpUserDetails")[user].address}`)
             cy.xpath(SharedFunctions.getXPathValue('addressDetails'))
-                .should('be.visible').and('contain', Cypress.env('address').country)
+                .should('be.visible').and('contain', `${Cypress.env("signUpUserDetails")[user].address2}`)
             cy.xpath(SharedFunctions.getXPathValue('addressDetails'))
-                .should('be.visible').and('contain', Cypress.env('address').contactNo)
+                .should('be.visible').contains(`${Cypress.env("signUpUserDetails")[user].city} ${Cypress.env("signUpUserDetails")[user].state} ${Cypress.env("signUpUserDetails")[user].zipcode}`)
+            cy.xpath(SharedFunctions.getXPathValue('addressDetails'))
+                .should('be.visible').and('contain', `${Cypress.env("signUpUserDetails")[user].country}`)
+            cy.xpath(SharedFunctions.getXPathValue('addressDetails'))
+                .should('be.visible').and('contain', `${Cypress.env("signUpUserDetails")[user].mobileNumber}`)
         } else {
             cy.xpath(SharedFunctions.getXPathValue('addressInvoiceDetails')).should('be.visible')
-                .and('contain', Cypress.env('addressInvoice').yourAddress)
+                .and('contain', 'Your billing address')
             cy.xpath(SharedFunctions.getXPathValue('addressInvoiceDetails'))
-                .should('be.visible').and('contain', Cypress.env('addressInvoice').name)
+                .should('be.visible').and('contain', `Mr. ${Cypress.env("signUpUserDetails")[user].firstName} ${Cypress.env("signUpUserDetails")[user].lastName}`)
             cy.xpath(SharedFunctions.getXPathValue('addressInvoiceDetails'))
-                .should('be.visible').and('contain', Cypress.env('addressInvoice').address1)
+                .should('be.visible').and('contain', `${Cypress.env("signUpUserDetails")[user].comapany}`)
             cy.xpath(SharedFunctions.getXPathValue('addressInvoiceDetails'))
-                .should('be.visible').contains(Cypress.env('addressInvoice').cityState)
+                .should('be.visible').and('contain', `${Cypress.env("signUpUserDetails")[user].address}`)
             cy.xpath(SharedFunctions.getXPathValue('addressInvoiceDetails'))
-                .should('be.visible').and('contain', Cypress.env('addressInvoice').country)
+                .should('be.visible').and('contain', `${Cypress.env("signUpUserDetails")[user].address2}`)
             cy.xpath(SharedFunctions.getXPathValue('addressInvoiceDetails'))
-                .should('be.visible').and('contain', Cypress.env('addressInvoice').contactNo)
+                .should('be.visible').contains(`${Cypress.env("signUpUserDetails")[user].city} ${Cypress.env("signUpUserDetails")[user].state} ${Cypress.env("signUpUserDetails")[user].zipcode}`)
+            cy.xpath(SharedFunctions.getXPathValue('addressInvoiceDetails'))
+                .should('be.visible').and('contain', `${Cypress.env("signUpUserDetails")[user].country}`)
+            cy.xpath(SharedFunctions.getXPathValue('addressInvoiceDetails'))
+                .should('be.visible').and('contain', `${Cypress.env("signUpUserDetails")[user].zipcode}`)
         }
     }
 
@@ -333,7 +343,7 @@ export class productDetails extends newPage {
             const numericalValue = parseInt(price.split(' ')[1]);
             return sum + numericalValue;
         }, 0);
-        cy.xpathIsVisible("//p[normalize-space()='Rs. " + totalPrice + "']").should('have.text', 'Rs. ' + totalPrice)
+        cy.xpathIsVisible("//tbody/tr/td[4]/p[1]").should('have.text', 'Rs. ' + totalPrice)
     }
 
     verifyTextAndClickPlaceOrder() {

@@ -1,27 +1,9 @@
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
-import SharedFunctions from "../../cypress/pageObject/sharedFunction.js";
-import newPage from "../../cypress/pageObject/newHomePage.js";
-import login from "../../cypress/pageObject/login.js";
 import productDetails from "../../cypress/pageObject/productDetails.js";
-import sanityTesting from "../../cypress/pageObject/sanity.js";
 import utility from "../../cypress/pageObject/utility.js";
 
-const newPageHome = new newPage();
 const ProductDetails = new productDetails();
-const sanityTest = new sanityTesting();
-const Login = new login();
 const util = new utility();
-
-beforeEach(() => {
-    cy.visit('/')
-    cy.getApiData();
-});
-
-before(() => {
-    SharedFunctions.loadXPathValues();
-    SharedFunctions.loadIdValues();
-    SharedFunctions.loadTextValues();
-})
 
 Given('Get the stored datamap values and write the values in json file', ()=>{
     ProductDetails.writeValuesInJsonFile();

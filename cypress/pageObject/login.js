@@ -1,7 +1,8 @@
+import signUpPage from "./signup";
 
 export const loginMap = new Map();
 
-export class login {
+export class login extends signUpPage {
 
     visitLoginpage() {
         return cy.visit('/login')
@@ -21,10 +22,11 @@ export class login {
 
 
     loginPage(userType) {
-        const Email = Cypress.env(userType).Email;
-        const passWord = Cypress.env(userType).Password
-        const userName = Cypress.env(userType).UserName
+        const Email = Cypress.env("signUpUserDetails")[userType].email;
+        const passWord = Cypress.env("signUpUserDetails")[userType].password
+        const userName = Cypress.env("signUpUserDetails")[userType].username
         cy.session([Email, passWord], () => {
+            this.signUpNewUser(userType);
             this.visitLoginpage();
             this.typeEmailInLoginPage(Email);
             this.typePasswordInLoginPage(passWord);

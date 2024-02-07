@@ -1,26 +1,12 @@
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
-import SharedFunctions from "../../cypress/pageObject/sharedFunction.js";
 import newPage from "../../cypress/pageObject/newHomePage.js";
-import login from "../../cypress/pageObject/login.js";
 import productDetails from "../../cypress/pageObject/productDetails.js"
 import sanityTesting from "../../cypress/pageObject/sanity.js"
 
 const newPageHome = new newPage();
 const ProductDetails = new productDetails();
 const sanityTest = new sanityTesting();
-const Login = new login();
 
-beforeEach(() => {
-    cy.visit('/')
-    cy.getApiData();
-});
-
-before(() => {
-    SharedFunctions.loadXPathValues();
-    SharedFunctions.loadIdValues();
-    SharedFunctions.loadTextValues();
-    Login.loginPage('ThirdUser');
-})
 
     Given('Grab the page header names in homepage', ()=>{
         newPageHome.grabPageHeaderNames();
