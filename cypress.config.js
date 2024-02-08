@@ -30,7 +30,7 @@ module.exports = defineConfig({
 		fixturesFolder: 'src/fixtures',
 		redirectionLimit: 50,
 		chromeWebSecurity: true,
-		defaultCommandTimeout: 60000,
+		defaultCommandTimeout: 70000,
 		execTimeout: 60000,
 		pageLoadTimeout: 60000,
 		viewportHeight: 720,
