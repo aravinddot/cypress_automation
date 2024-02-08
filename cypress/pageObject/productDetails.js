@@ -201,6 +201,8 @@ export class productDetails extends newPage {
                     itemName: cartName,
                     itemPrice: cartPrice
                 })
+            dataMap.set('cartName', cartName)
+            dataMap.set('cartPrice', cartPrice)
         })
     }
 
@@ -211,16 +213,14 @@ export class productDetails extends newPage {
             const cartName = val.itemName
             const cartPrice = val.itemPrice
             this.randomNumbers(count, howManyCarts).then((randNum) => {
-                //let randNum = [23, 6, 6, 23, 3, 3, 4, 5, 7, 7]
-                randNum.forEach((num) => {
-                    cy.wait(500)
-                    cy.xpath(SharedFunctions.getXPathValue('singleCartXpath')).eq(num).should('be.visible')
-                        .and('contain', cartName[num], cartPrice[num]).contains('Add to cart').click({ force: true })
-                    this.firstCartAdded();
-                    this.continueShoppingButton();
-                })
-                dataMap.set('randomNumber', randNum)
+            randNum.forEach((num) => {
+                cy.xpath(SharedFunctions.getXPathValue('singleCartXpath')).eq(num).should('be.visible')
+                    .and('contain', cartName[num], cartPrice[num]).contains('Add to cart').click({ force: true })
+                this.firstCartAdded();
+                this.continueShoppingButton();
             })
+            dataMap.set('randomNumber', randNum)
+             })
         })
     }
 
@@ -228,18 +228,17 @@ export class productDetails extends newPage {
         cy.url().should('include', 'https://automationexercise.com/view_cart')
     }
 
-    findRepeatedValues(array) {
-        const frequencyMap = {};
-        const repeatedValues = [];
-        array.forEach((element) => {
-            if (frequencyMap[element] === undefined) {
-                frequencyMap[element] = 1;
+    findRepeatedValues(myArray) {
+        const seenElements = {};
+        const duplicates = [];
+        myArray.forEach(element => {
+            if (seenElements[element]) {
+                duplicates.push(element);
             } else {
-                repeatedValues.push(element);
-                frequencyMap[element]++;
+                seenElements[element] = true;
             }
         });
-        return repeatedValues;
+        return duplicates
     }
 
     countOccurrences(array) {
@@ -254,49 +253,6 @@ export class productDetails extends newPage {
         return countMap
     }
 
-    verifyCartNamePriceTotalAmount() {
-        const totalAmount = []
-        const randNum = dataMap.get('randomNumber')
-        const repeatedValues = this.findRepeatedValues(randNum)
-        const indexOfRepeatedValue = randNum.indexOf(repeatedValues[0])
-        const noRepeatedValues = [...new Set(randNum)];
-        const quantity = this.countOccurrences(randNum)
-        cy.readFile('src/fixtures/writeFile.json').then((jsonVal) => {
-            const itemName = jsonVal.itemName
-            const itemPrice = jsonVal.itemPrice
-            noRepeatedValues.forEach((num, index) => {
-                if (repeatedValues.includes(num)) {
-                    cy.xpathIsVisible(SharedFunctions.getXPathValue('cartPageCartName')).eq(indexOfRepeatedValue).should('have.text', itemName[num])
-                    cy.xpathIsVisible(SharedFunctions.getXPathValue('cartPageCartPrice')).eq(indexOfRepeatedValue).should('have.text', itemPrice[num])
-                    cy.xpathIsVisible(SharedFunctions.getXPathValue('cartPageCartQuantity')).eq(indexOfRepeatedValue).should('contain', quantity[num])
-                    const totalQuantity = quantity[num]
-                    if (totalQuantity > 1) {
-                        const replacePrice = itemPrice[num].replace(/\D/g, '')
-                        const totalNum = replacePrice * quantity[num]
-                        cy.xpathIsVisible(SharedFunctions.getXPathValue('cartPageCartPrice2')).eq(indexOfRepeatedValue).should('contain', totalNum)
-                            .invoke('text').then((amountVal1) => {
-                                totalAmount.push(amountVal1)
-                            })
-                    }
-                    else {
-                        cy.xpathIsVisible(SharedFunctions.getXPathValue('cartPageCartPrice2')).eq(indexOfRepeatedValue).should('have.text', itemPrice[num])
-                            .invoke('text').then((amountVal1) => {
-                                totalAmount.push(amountVal1)
-                            })
-                    }
-                } else {
-                    cy.xpathIsVisible(SharedFunctions.getXPathValue('cartPageCartName')).eq(index).should('have.text', itemName[num])
-                    cy.xpathIsVisible(SharedFunctions.getXPathValue('cartPageCartPrice')).eq(index).should('have.text', itemPrice[num])
-                    cy.xpathIsVisible(SharedFunctions.getXPathValue('cartPageCartQuantity')).eq(index).should('contain', quantity[num])
-                    cy.xpathIsVisible(SharedFunctions.getXPathValue('cartPageCartPrice2')).eq(index).should('have.text', itemPrice[num])
-                        .invoke('text').then((amountVal2) => {
-                            totalAmount.push(amountVal2)
-                        })
-                }
-            })
-            dataMap.set('cartAddedTotalAmount', totalAmount)
-        })
-    }
 
     verifyAddressDetails(text) {
         const user = loginMap.get('userType')
@@ -350,6 +306,52 @@ export class productDetails extends newPage {
         cy.xpathIsVisible("//div[@id='ordermsg']//label")
             .should('contain', 'If you would like to add a comment about your order, please write it in the field below.')
         cy.xpathIsVisible("//div//a[@class='btn btn-default check_out']").should('contain', 'Place Order').click({ force: true })
+    }
+
+
+    verifyCartNamePriceTotalAmount() {
+        const totalAmount = []
+        const randNum = dataMap.get('randomNumber')
+        const cartNames = dataMap.get('cartName')
+        const cartPrices = dataMap.get('cartPrice')
+        const repeatedValues = this.findRepeatedValues(randNum)
+        const indexOfRepeatedValue = randNum.indexOf(repeatedValues[0])
+        const noRepeatedValues = [...new Set(randNum)];
+        const quantity = this.countOccurrences(randNum)
+        noRepeatedValues.forEach((num, index) => {
+            if (repeatedValues.includes(num)) {
+                cy.xpathIsVisible(SharedFunctions.getXPathValue('cartPageCartName')).eq(index).should('have.text', cartNames[num])
+                cy.xpathIsVisible(SharedFunctions.getXPathValue('cartPageCartPrice')).eq(index).should('have.text', cartPrices[num])
+                cy.xpathIsVisible(SharedFunctions.getXPathValue('cartPageCartQuantity')).eq(index).should('contain', quantity[num])
+                const totalQuantity = quantity[num]
+                if (totalQuantity > 1) {
+                    const replacePrice = cartPrices[num].replace(/\D/g, '')
+                    const totalNum = replacePrice * quantity[num]
+                    cy.xpathIsVisible(SharedFunctions.getXPathValue('cartPageCartPrice2')).eq(index).should('contain', totalNum)
+                        .invoke('text').then((amountVal1) => {
+                            totalAmount.push(amountVal1)
+                        })
+                }
+                else {
+                    cy.xpathIsVisible(SharedFunctions.getXPathValue('cartPageCartPrice2')).eq(index).should('have.text', cartPrices[num])
+                        .invoke('text').then((amountVal1) => {
+                            totalAmount.push(amountVal1)
+                        })
+                }
+
+            } else {
+                cy.xpathIsVisible(SharedFunctions.getXPathValue('cartPageCartName')).eq(index).should('have.text', cartNames[num])
+                cy.xpathIsVisible(SharedFunctions.getXPathValue('cartPageCartPrice')).eq(index).should('have.text', cartPrices[num])
+                cy.xpathIsVisible(SharedFunctions.getXPathValue('cartPageCartQuantity')).eq(index).should('contain', quantity[num])
+                cy.xpathIsVisible(SharedFunctions.getXPathValue('cartPageCartPrice2')).eq(index).should('have.text', cartPrices[num])
+                    .invoke('text').then((amountVal1) => {
+                        totalAmount.push(amountVal1)
+                    })
+            }
+
+        })
+        console.log(totalAmount);
+        dataMap.set('cartAddedTotalAmount', totalAmount)
     }
 
 

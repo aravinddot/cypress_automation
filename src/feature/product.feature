@@ -25,7 +25,7 @@ Feature: Product
      Scenario: Grab the cart name and cart price in products page randomly and validating
         Given Click on the 'Products' option in homepage
         And Verify all the cart and select carts randomly 
-        And Select the cart randomly and perform add to cart actions "15"
+        And Select the cart randomly and perform add to cart actions "20"
         And Click on the 'Cart' option in homepage
         And Verify the cart page is visible properly
         And Verify the cart names, cart price and total amount
