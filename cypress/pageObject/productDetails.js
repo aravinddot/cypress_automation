@@ -315,7 +315,6 @@ export class productDetails extends newPage {
         const cartNames = dataMap.get('cartName')
         const cartPrices = dataMap.get('cartPrice')
         const repeatedValues = this.findRepeatedValues(randNum)
-        const indexOfRepeatedValue = randNum.indexOf(repeatedValues[0])
         const noRepeatedValues = [...new Set(randNum)];
         const quantity = this.countOccurrences(randNum)
         noRepeatedValues.forEach((num, index) => {
