@@ -18,6 +18,8 @@ import './command'
 import './sanityCustomCommands'
 import "cypress-real-events";
 require('cypress-xpath');
+import 'cypress-file-upload';
+
 /// <reference types="Cypress" />
 
 Cypress.on('uncaught:exception', (err, runnable) => {

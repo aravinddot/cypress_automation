@@ -76,7 +76,19 @@ export class sanityTesting extends productDetails {
     verifyTheButtonTextHomepage(text) {
         cy.xpath("//div[@class='carousel-inner']//div//div//a//button").should('be.visible')
             .and('contain', text)
+    }
 
+    uploadFile(fileName) {
+        cy.xpath("//input[@name='upload_file']").attachFile(fileName)
+    }
+
+    clickContactFormSubmitBtn() {
+        cy.xpath("//input[@data-qa='submit-button']").click({ force: true })
+    }
+
+    verifyContactFormSubmitSuccessfully() {
+        cy.xpath("//div[@class='status alert alert-success']").should('be.visible')
+            .and('have.text', 'Success! Your details have been submitted successfully.')
     }
 
 }

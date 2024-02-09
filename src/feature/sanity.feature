@@ -22,7 +22,24 @@ Feature: Sanity Testing
 		And Verify the button is visible and the text contains "Test Cases"
 		Then Verify the button is visible and the text contains "APIs list for practice"
 
+	Scenario: Verify and validate the contact form
+		Given Click on the 'Contact us' option in homepage
+		When Verify the contact us page is visible
+		And Verify 'Contact Us' form titile is visible
+		And Verify 'Get In Touch' form titile is visible
+		And Verify 'Feedback For Us' form titile is visible
+		And Enter the 'name' in contact form as 'username'
+		And Enter the 'email' in contact form as 'email'
+		And Enter the 'subject' in contact form as 'subject'
+		And Enter the text message in contact form 'textArea'
+		And Upload a file 'invoice.txt' in contact form
+		And click on contact form submit button
+		Then Verify the contact form is submitted successfully
 
-	
+	Scenario: Verify the subscription in homepage and enter and email and verify successfull message
+		Given Verify the subscription text is visible in homepage
+		When Enter the current user email in email textbox
+		And Click on subscription submit button
+		Then Verify the subscribed successfully message shown	
 
 

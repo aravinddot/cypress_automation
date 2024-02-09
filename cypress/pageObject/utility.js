@@ -1,4 +1,5 @@
 import SharedFunctions from "./sharedFunction";
+import { loginMap } from "./login";
 
 export class utility {
 
@@ -61,6 +62,39 @@ export class utility {
 
     verifyCartIsEmpty() {
         return cy.xpath(SharedFunctions.getXPathValue('cartIsEmptyText')).contains('Cart is empty!').should('be.visible');
+    }
+
+    verifyContactUsPageVisible() {
+        cy.url().should('include', 'https://automationexercise.com/contact_us')
+    }
+
+    contactPageTitleVisible(text) {
+        return cy.xpath("//h2[@class='title text-center']").should('be.visible').and('contain', text)
+    }
+
+    enterContactDetailsForm(element, text) {
+        const userType = loginMap.get('userType')
+        return cy.xpath("//input[@data-qa='" + element + "']").should('be.visible').type(Cypress.env("signUpUserDetails")[userType][text])
+    }
+
+    enterContactDetailsFormTextarea(textArea) {
+        const userType = loginMap.get('userType')
+        return cy.xpath("//textarea[@id='message']").should('be.visible').type(Cypress.env("signUpUserDetails")[userType][textArea])
+    }
+
+    enterEmailInSubscription() {
+        const userType = loginMap.get('userType')
+        cy.xpath("//input[@id='susbscribe_email']").should('be.visible').type(Cypress.env("signUpUserDetails")[userType].email)
+    }
+
+    clickSubmitSubscriptionBtn() {
+        return cy.xpath("//button[@type='submit']").should('be.visible').click({ force: true })
+    }
+
+    VerifySubscribedSuccessfullyMessage() {
+        return cy.xpath("//div[@class='alert-success alert']").should('be.visible')
+            .and('have.text', 'You have been successfully subscribed!')
+
     }
 
     randomNumbers(count, howManyCarts) {
