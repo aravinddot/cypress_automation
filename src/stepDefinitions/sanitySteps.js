@@ -5,7 +5,6 @@ import { loginMap } from "../../cypress/pageObject/login.js";
 
 const sanityTest = new sanityTesting();
 const utils = new utility();
-const currentUser = loginMap.get('userType') 
 
 Given('Verify each cart css background colour and get the each cart overlayed content',  ()=>{
     sanityTest.setTheHoveredContentText();

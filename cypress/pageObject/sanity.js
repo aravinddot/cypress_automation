@@ -16,6 +16,7 @@ export class sanityTesting extends productDetails {
         this.grabPageHeaderNames();
         this.verifyPageHeaderNames();
         this.addedCartOneIsVisible();
+        cy.wait(2000)
         this.addedCartTwoIsVisible();
         this.verifyCartIsEmpty();
         this.clickHomePage();

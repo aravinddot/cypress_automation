@@ -3,6 +3,7 @@ import { loginMap } from "./login";
 
 export class utility {
 
+
     clickFirstCart(index = 0) {
         return cy.xpath(SharedFunctions.getXPathValue('cart1')).eq(index).contains('Add to cart').should('be.visible').click({ force: true });
     }
@@ -31,12 +32,12 @@ export class utility {
         return cy.xpath(SharedFunctions.getXPathValue('cartBtn')).should('be.visible').click({ force: true });
     }
 
-    addedCartOneIsVisible(index = 0) {
-        return cy.xpath(SharedFunctions.getXPathValue('addedCart1')).eq(index).should('be.visible').click({ force: true });
+    addedCartOneIsVisible() {
+        return cy.xpath(SharedFunctions.getXPathValue('addedCart1')).first().should('be.visible').click({ force: true });
     }
 
-    addedCartTwoIsVisible(index = 1) {
-        return cy.xpath(SharedFunctions.getXPathValue('addedCart2')).eq(index).should('be.visible').click({ force: true });
+    addedCartTwoIsVisible() {
+        return cy.xpath(SharedFunctions.getXPathValue('addedCart2')).first().should('be.visible').click({ force: true });
     }
 
     clickHomePage() {
@@ -45,7 +46,6 @@ export class utility {
 
     clickProduct(index = '') {
         return cy.xpath(SharedFunctions.getXPathValue('clickProduct')).eq(index).contains('View Product').should('be.visible').click({ force: true });
-
     }
 
     clickHeaderText(text) {
@@ -72,19 +72,21 @@ export class utility {
         return cy.xpath("//h2[@class='title text-center']").should('be.visible').and('contain', text)
     }
 
+    userType() {
+        const currentUser = loginMap.get('userType')
+        return currentUser
+    }
+
     enterContactDetailsForm(element, text) {
-        const userType = loginMap.get('userType')
-        return cy.xpath("//input[@data-qa='" + element + "']").should('be.visible').type(Cypress.env("signUpUserDetails")[userType][text])
+        return cy.xpath("//input[@data-qa='" + element + "']").should('be.visible').type(Cypress.env("signUpUserDetails")[this.userType()][text])
     }
 
     enterContactDetailsFormTextarea(textArea) {
-        const userType = loginMap.get('userType')
-        return cy.xpath("//textarea[@id='message']").should('be.visible').type(Cypress.env("signUpUserDetails")[userType][textArea])
+        return cy.xpath("//textarea[@id='message']").should('be.visible').type(Cypress.env("signUpUserDetails")[this.userType()][textArea])
     }
 
     enterEmailInSubscription() {
-        const userType = loginMap.get('userType')
-        cy.xpath("//input[@id='susbscribe_email']").should('be.visible').type(Cypress.env("signUpUserDetails")[userType].email)
+        cy.xpath("//input[@id='susbscribe_email']").should('be.visible').type(Cypress.env("signUpUserDetails")[this.userType()].email)
     }
 
     clickSubmitSubscriptionBtn() {

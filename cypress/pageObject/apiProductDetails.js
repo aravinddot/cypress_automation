@@ -8,7 +8,6 @@ export class apiProductDetails {
         })
     }
 
-
     getApiResponse() {
         cy.getApiResponse().then((apiResponse) => {
             const productName = [];
