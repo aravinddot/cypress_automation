@@ -10,7 +10,8 @@
     "cy-login": "cypress run --browser chrome --spec src/feature/login.feature",
     "cy-sanity": "cypress run --browser chrome --spec src/feature/sanity.feature",
     "cy-regression": "cypress run --browser chrome --spec src/feature/homepage.feature",
-    "cy-product": "cypress run --browser chrome --spec src/feature/product.feature"
+    "cy-product": "cypress run --browser chrome --spec src/feature/product.feature",
+    "cy-apiTest": "cypress run --browser chrome --spec src/feature/apiTestcase.feature"
   },
   "author": "",
   "license": "ISC",
