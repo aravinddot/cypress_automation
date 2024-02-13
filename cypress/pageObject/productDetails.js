@@ -41,20 +41,26 @@ export class productDetails extends newPage {
         })
     }
 
-    validateCartNamePriceCategory() {
+    validateCartNamePriceCategory(section) {
         const cartName = dataMap.get('cartName')
         const cartPrice = dataMap.get('cartPrice')
         const category = dataMap.get('categoryNames')
+        const brandList = dataMap.get('brandList')
         cartName.forEach((itemName, index) => {
             const itemPrice = cartPrice[index]
             const categoryItem = category[index]
             this.clickProduct(index)
+            if(section == 'side section') {
             this.verifyHeadingHomepage();
             this.verifyCategoryNameHomePage();
             this.verifyBrandHomePage();
+            }
             cy.xpath(SharedFunctions.getXPathValue('itemName')).should('be.visible').should('have.text', itemName);
             cy.xpath(SharedFunctions.getXPathValue('itemPrice')).should('be.visible').should('have.text', itemPrice);
             cy.xpath(SharedFunctions.getXPathValue('itemCategory')).should('be.visible').contains(categoryItem)
+            if(section == 'brand') {
+            cy.xpath("//div[@class='product-information']//p[4]").should('be.visible').and('contain', `Brand: ${brandList[index]}`)
+            }
             cy.xpath(SharedFunctions.getXPathValue('clickHomePage')).contains('Home').click({ force: true });
         })
     }

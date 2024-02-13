@@ -1,7 +1,6 @@
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import sanityTesting from "../../cypress/pageObject/sanity.js"
 import utility from "../../cypress/pageObject/utility.js";
-import { loginMap } from "../../cypress/pageObject/login.js";
 
 const sanityTest = new sanityTesting();
 const utils = new utility();
@@ -72,4 +71,8 @@ When('Click on subscription submit button', ()=>{
 
 When('Verify the subscribed successfully message shown', ()=>{
     utils.VerifySubscribedSuccessfullyMessage()
+})
+
+Then('Verify the testcase page url showing properly', ()=>{
+    utils.testcasePageVisible();
 })

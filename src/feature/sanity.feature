@@ -42,4 +42,8 @@ Feature: Sanity Testing
 		And Click on subscription submit button
 		Then Verify the subscribed successfully message shown	
 
+	Scenario: Verify the testcase page is showing properly
+		Given Click on the 'Test Cases' option in homepage
+		Then Verify the testcase page url showing properly
+
 

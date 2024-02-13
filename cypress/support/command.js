@@ -80,11 +80,11 @@ Cypress.Commands.add('readApiData', () => {
 
 Cypress.Commands.add('setDataMap', (key, value) => {
     cy.wrap({ [key]: value }).as('dataMap');
-  });
+});
 
 Cypress.Commands.add('getDataMap', (key) => {
     return cy.get('@dataMap').then((dataMap) => dataMap[key]);
-  });
+});
 
 
 
@@ -106,7 +106,7 @@ Cypress.Commands.add('xpathIsVisible', (xpath) => {
 })
 
 Cypress.Commands.add('clickOnXpath', (xpath) => {
-    cy.xpath(xpath).should('be.visible').click({force:true}).then((clickOnXpath) => {
+    cy.xpath(xpath).should('be.visible').click({ force: true }).then((clickOnXpath) => {
         return clickOnXpath;
     })
 })
@@ -118,29 +118,29 @@ Cypress.Commands.add('getApiResponse', () => {
     });
 });
 
-Cypress.Commands.add('verifyTextContains', (xpath, index, text)=>{
+Cypress.Commands.add('verifyTextContains', (xpath, index, text) => {
     cy.xpath(xpath).eq(index).should('be.visible').and('contain.text', text)
 });
 
-Cypress.Commands.add('xpathExists', (xpath)=>{
+Cypress.Commands.add('xpathExists', (xpath) => {
     cy.xpath(xpath).should('be.visible').and('exist')
 });
 
-Cypress.Commands.add('enterValue', (element, searchValue)=>{
+Cypress.Commands.add('enterValue', (element, searchValue) => {
     cy.get(element).should('be.visible').clear().type(searchValue)
 });
 
 Cypress.Commands.add('clickOnText', (xpath, text) => {
-    cy.xpath(xpath).should('be.visible').contains(text).click({force:true}).then((clickOnText) => {
+    cy.xpath(xpath).should('be.visible').contains(text).click({ force: true }).then((clickOnText) => {
         return clickOnText;
     })
 });
 
-Cypress.Commands.add('clickOnButton', (element)=>{
-    cy.get(element).should('be.visible').click({force:true})
+Cypress.Commands.add('clickOnButton', (element) => {
+    cy.get(element).should('be.visible').click({ force: true })
 });
 
-Cypress.Commands.add('elementExists', (element)=>{
+Cypress.Commands.add('elementExists', (element) => {
     cy.xpath(xpath).should('exist')
 })
 
@@ -148,10 +148,35 @@ Cypress.Commands.add("ifXPathExist", (xpath) => {
     return cy.xpath('count(' + xpath + ')')
 })
 
+Cypress.Commands.add('apiGetRes', () => {
+    cy.request('GET', 'https://automationexercise.com/api/productsList').as('apiResponse')
+    cy.get('@apiResponse').then((response) => {
+        return response
+    });
+})
+
+Cypress.Commands.add('apiPostRes', () => {
+    cy.request('POST', 'https://automationexercise.com/api/productsList').as('postRes')
+    cy.get('@postRes').then((response) => {
+        return response
+    })
+});
+
+Cypress.Commands.add('allBrandList', () => {
+    cy.request({
+        method: 'GET',
+        url: 'https://automationexercise.com/api/brandsList',
+        failOnStatusCode: false
+    }).as('brandList')
+    cy.get('@brandList').then((res) => {
+        return res
+    })
+})
 
 
 
-            
+
+
 
 
 

@@ -17,7 +17,7 @@ Feature: Homepage
 
     Scenario: Verify the each cart validation with api response
         Given Get all the values from api response
-        Then Validate the cart name cart price and category in each cart
+        Then Validate the cart name cart price and category in each cart and 'side section'
 
     Scenario: Give search product name and verify the correct product has been displayed
         Given Get the search value randomly

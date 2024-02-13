@@ -36,9 +36,9 @@ const sanityTest = new sanityTesting();
         ProductDetails.getCartNamePriceCategory();
     });
 
-    Then('Validate the cart name cart price and category in each cart', ()=>{
-        ProductDetails.validateCartNamePriceCategory();
-    });
+    Then('Validate the cart name cart price and category in each cart and {string}', (section)=>{
+        ProductDetails.validateCartNamePriceCategory(section);
+    })
 
     Given('Verify side sections category and brands heading in the page', ()=>{
         newPageHome.verifyHeadingHomepage();

@@ -1,5 +1,6 @@
 import SharedFunctions from "./sharedFunction";
 import { loginMap } from "./login";
+import { dataMap } from "./newHomePage";
 
 export class utility {
 
@@ -127,6 +128,31 @@ export class utility {
             cy.xpath(SharedFunctions.getXPathValue('cartIsEmptyText')).contains('Cart is empty!').should('be.visible');
         })
     }
+
+    testcasePageVisible() {
+        return cy.url().should('include', 'https://automationexercise.com/test_cases')
+    }
+
+    getAllBrandsList() {
+        const arrayBrand = []
+         cy.allBrandList().then((brandList)=>{
+            expect(brandList.status).to.eq(200)
+            expect(brandList.statusText).to.eq('OK')
+             const body = JSON.parse(brandList.body)
+             const brands = body.brands
+             expect(body.responseCode).to.eq(200)
+             Object.keys(brands).forEach((val)=>{
+                arrayBrand.push(brands[val].brand)
+             })
+            dataMap.set('brandList', arrayBrand)
+         })
+     }
+ 
+ 
+     verifyBrandSinUi() {
+         const brandList = dataMap.get('brandList')
+         console.log(brandList);
+     }
 
 }
 
