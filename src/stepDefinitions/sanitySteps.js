@@ -76,3 +76,11 @@ When('Verify the subscribed successfully message shown', ()=>{
 Then('Verify the testcase page url showing properly', ()=>{
     utils.testcasePageVisible();
 })
+
+Given('Get the random value with the count of {string}', (carts)=>{
+    sanityTest.clickViewProduct(carts);
+})
+
+When('Click the cart and grab and then write a review', ()=>{
+    sanityTest.writeReviewWithTheCart();
+})

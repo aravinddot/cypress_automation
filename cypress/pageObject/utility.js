@@ -78,6 +78,16 @@ export class utility {
         return currentUser
     }
 
+    userLoggedInUserName() {
+        const userName = loginMap.get('userName')
+        return userName
+    }
+
+    userLoggedInEmail() {
+        const Email = loginMap.get('email')
+        return Email
+    }
+
     enterContactDetailsForm(element, text) {
         return cy.xpath("//input[@data-qa='" + element + "']").should('be.visible').type(Cypress.env("signUpUserDetails")[this.userType()][text])
     }

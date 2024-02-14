@@ -92,6 +92,32 @@ export class sanityTesting extends productDetails {
             .and('have.text', 'Success! Your details have been submitted successfully.')
     }
 
+    clickViewProduct(carts) {
+        this.randomNumbers(30, carts).then((randNum) => {
+            dataMap.set('cartRandNum', randNum)
+        })
+    }
+
+    writeReviewWithTheCart() {
+        const randomNumber = dataMap.get('cartRandNum')
+        const userName = this.userLoggedInUserName();
+        const Email = this.userLoggedInEmail();
+        randomNumber.forEach((num) => {
+            this.clickProduct(num)
+            cy.xpathIsVisible(SharedFunctions.getXPathValue('itemName')).invoke('text').then((cartName) => {
+                cy.xpathIsVisible(SharedFunctions.getXPathValue('itemPrice')).invoke('text').then((cartPrice) => {
+                    cy.xpathIsVisible("//input[@id='name']").type(userName)
+                    cy.xpathIsVisible("//input[@id='email']").type(Email)
+                    cy.xpathIsVisible("//textarea[@id='review']").type(`The product name is ${cartName} and the price is ${cartPrice}`)
+                    cy.xpathIsVisible("//button[@id='button-review']").click({ force: true })
+                    cy.xpathIsVisible("//div[@class='alert-success alert']//span").should('have.text', 'Thank you for your review.')
+                })
+            })
+            this.clickHomePage();
+        })
+    }
+
+
 }
 
 export default sanityTesting

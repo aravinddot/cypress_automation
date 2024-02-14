@@ -46,4 +46,8 @@ Feature: Sanity Testing
 		Given Click on the 'Test Cases' option in homepage
 		Then Verify the testcase page url showing properly
 
+	Scenario: Write a review in some of products 
+		Given Get the random value with the count of '3'
+		When Click the cart and grab and then write a review
+
 

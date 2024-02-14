@@ -38,6 +38,7 @@ export class login extends signUpPage {
         });
         loginMap.set('userType', userType)
         loginMap.set('userName', userName)
+        loginMap.set('email', Email)
     }
    
 }
