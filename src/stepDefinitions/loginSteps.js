@@ -7,9 +7,10 @@ import signUpPage from "../../cypress/pageObject/signup.js";
 const newPageHome = new newPage();
 const Login = new login();
 const SignUp = new signUpPage();
+const userLogin = 'user2'
 
 beforeEach(() => {
-    Login.loginPage('user2');
+    Login.loginPage(userLogin);
     cy.visit('/')
     cy.getApiData();
 });
@@ -19,6 +20,30 @@ before(() => {
     SharedFunctions.loadIdValues();
     SharedFunctions.loadTextValues();
 })
+    Given('Login with valid email and password', ()=>{
+        Login.loginPage(userLogin)
+    })
+
+    When('Enter the email id {string}', (email)=>{
+        Login.typeEmailInLoginPage(email)
+    })
+
+    When('Enter the password {string}', (password)=>{
+        Login.typePasswordInLoginPage(password)
+    })
+
+    When('Click on login submit button', ()=>{
+        Login.clickSubmitButtonInLoginPage();
+    })
+
+    Then('verify the email and password are invalid', ()=>{
+        Login.incorrectEmailPassword();
+    })
+
+    Then('Clear the all saved session storage', ()=>{
+        Cypress.session.clearAllSavedSessions();
+    })
+
     Given('Verify the logged in name in homepage', () => {
         newPageHome.verifyHomePage()
     });
@@ -54,6 +79,7 @@ before(() => {
     Then('Enter {string} Address informations',(user)=>{
         SignUp.enterAddressInformation(user);
     })
+
 
     
     

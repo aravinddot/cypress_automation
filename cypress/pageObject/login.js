@@ -20,6 +20,10 @@ export class login extends signUpPage {
         return cy.xpath("//button[@data-qa='login-button']").should('be.visible').click({ force: true })
     }
 
+    incorrectEmailPassword() {
+        return cy.xpath("//div[@class='login-form']//p").should('be.visible').and('have.text', 'Your email or password is incorrect!')
+    }
+
 
     loginPage(userType) {
         const Email = Cypress.env("signUpUserDetails")[userType].email;
