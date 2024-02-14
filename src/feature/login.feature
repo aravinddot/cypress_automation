@@ -1,9 +1,5 @@
 Feature: Login
 
-	# Scenario: Verify Homepage Logged in with Correct User
-	# 	Given Verify the logged in name in homepage
-	# 	Then Verify the homepage section
-
 	Scenario: Verify login with invalid user details
 		Given Click on the 'Logout' option in homepage
 		When Enter the email id 'aravind123@gmail.com'
@@ -14,7 +10,8 @@ Feature: Login
 
 	Scenario: Login with valid email and password
 		Given Login with valid email and password
-		When Verify the logged in name in homepage
+		When Visit login page
+		And Verify the logged in name in homepage
 		Then Verify the homepage section
 
 
