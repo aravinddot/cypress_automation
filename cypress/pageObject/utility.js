@@ -107,7 +107,26 @@ export class utility {
     VerifySubscribedSuccessfullyMessage() {
         return cy.xpath("//div[@class='alert-success alert']").should('be.visible')
             .and('have.text', 'You have been successfully subscribed!')
+    }
 
+    clickScrollToTopIcon() {
+        return cy.xpathIsVisible("//a[@id='scrollUp']").click({force:true})
+    }
+    
+    scrollToBottom() {
+        return cy.window().scrollTo('bottom')
+    }
+
+    copyRightIsVisible() {
+        return cy.xpathIsVisible("//div[@class='footer-bottom']//p").should('have.text', 'Copyright © 2021 All rights reserved')
+    }
+
+    verifyThepageScrollToTop() {
+        cy.wait(500)
+        cy.window().then((win)=>{
+            const scrollPosition = win.scrollY;
+            expect(scrollPosition).to.equal(0);
+        })
     }
 
     randomNumbers(count, howManyCarts) {

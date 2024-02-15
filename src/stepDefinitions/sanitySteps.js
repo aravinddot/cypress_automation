@@ -84,3 +84,19 @@ Given('Get the random value with the count of {string}', (carts)=>{
 When('Click the cart and grab and then write a review', ()=>{
     sanityTest.writeReviewWithTheCart();
 })
+
+When('Click on the scroll to top icon in page bottom', ()=>{
+    utils.clickScrollToTopIcon();
+})
+
+Then('Verify the page is scroll to top', ()=>{
+    utils.verifyThepageScrollToTop();
+})
+
+Given('Verify the page scroll to bottom', ()=>{
+    utils.scrollToBottom();
+})
+
+When('Verify the copyright text is visible properly', ()=>{
+    utils.copyRightIsVisible();
+})

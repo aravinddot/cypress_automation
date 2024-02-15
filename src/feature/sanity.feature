@@ -50,4 +50,9 @@ Feature: Sanity Testing
 		Given Get the random value with the count of '3'
 		When Click the cart and grab and then write a review
 
+	Scenario: Verify that click on scroll to top icon
+		Given Verify the page scroll to bottom
+		When Verify the copyright text is visible properly
+		And Click on the scroll to top icon in page bottom
+		Then Verify the page is scroll to top
 
