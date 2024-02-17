@@ -64,7 +64,8 @@
   "cartPageCartPrice": "//table[@id='cart_info_table']//tr/td[@class='cart_price']//p",
   "cartPageCartQuantity": "//table[@id='cart_info_table']//tr/td[@class='cart_quantity']",
   "cartPageCartPrice2": "//table[@id='cart_info_table']//tr/td//p[@class='cart_total_price']",
-  "cartText": "//div[@class='features_items']//div[@class='col-sm-4']//div[@class='productinfo text-center']"
+  "cartText": "//div[@class='features_items']//div[@class='col-sm-4']//div[@class='productinfo text-center']",
+  "productsBrand": "//div[@class='product-information']//p[4]"
 
 
 }

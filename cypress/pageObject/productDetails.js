@@ -59,7 +59,7 @@ export class productDetails extends newPage {
             cy.xpath(SharedFunctions.getXPathValue('itemPrice')).should('be.visible').should('have.text', itemPrice);
             cy.xpath(SharedFunctions.getXPathValue('itemCategory')).should('be.visible').contains(categoryItem)
             if(section == 'brand') {
-            cy.xpath("//div[@class='product-information']//p[4]").should('be.visible').and('contain', `Brand: ${brandList[index]}`)
+            cy.xpath(SharedFunctions.getXPathValue('productsBrand')).should('be.visible').and('contain', `Brand: ${brandList[index]}`)
             }
             cy.xpath(SharedFunctions.getXPathValue('clickHomePage')).contains('Home').click({ force: true });
         })

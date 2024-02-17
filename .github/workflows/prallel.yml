@@ -66,4 +66,18 @@ jobs:
           browser: chrome
           command: npm run cy-apiTest
 
+  database-run:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      # Install npm dependencies, cache them correctly
+      # and run all Cypress tests
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          browser: chrome
+          command: npm run cy-databaseTest
+
+
           
