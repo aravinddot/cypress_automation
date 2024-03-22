@@ -1,34 +1,39 @@
 pipeline {
     agent any
     stages {
+        
         stage('build') {
+            ansiColor('xterm') {
+            }
             steps {
                 bat label: 'Install npm Package', script: 'npm install'
-                //set NO_COLOR=1
                 bat label: 'Build the Application', script: 'npm run cy-login'
                 echo 'build successfully'
             }
         }
         stage('deploy') {
+            ansiColor('xterm') {
+            }
             steps {
                 //bat label: 'Install npm Package', script: 'npm install'
-                set NO_COLOR=1
                 bat label: 'Deploy the Application', script: 'npm run cy-sanity'
                 echo 'deploy successfully'
             }
         }
         stage('test') {
+            ansiColor('xterm') {
+            }
             steps {
                 //bat label: 'Install npm Package', script: 'npm install'
-                set NO_COLOR=1
                 bat label: 'Run all testcases', script: 'npm run cy-run'
                 echo 'tested successfully'
             }
         }
         stage('release') {
+            ansiColor('xterm') {
+            }
             steps {
                 //bat label: 'Install npm Package', script: 'npm install'
-                set NO_COLOR=1
                 bat label: 'Deploy the Application', script: 'npm run cy-apiTest'
                 echo 'release successfully'
             }
