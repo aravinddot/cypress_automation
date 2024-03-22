@@ -3,8 +3,8 @@ pipeline {
     stages {
         stage('build') {
             steps {
-                bat label: 'Install npm Package', script: 'npm install'
                 set NO_COLOR=1
+                bat label: 'Install npm Package', script: 'npm install'
                 bat label: 'Build the Application', script: 'npm run cy-login'
                 echo 'build successfully'
             }
