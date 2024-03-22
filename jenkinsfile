@@ -5,7 +5,7 @@ pipeline {
             steps {
                 bat label: 'Install npm Package', script: 'npm install'
                 //set NO_COLOR=1
-                bat label: 'Build the Application', script: 'NO_COLOR=1 npm run cy-login'
+                bat label: 'Build the Application', script: 'npm run cy-login'
                 echo 'build successfully'
             }
         }
