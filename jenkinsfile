@@ -14,8 +14,8 @@ pipeline {
         stage('test') {
             steps {
 
-                sh 'npm install'
-                sh 'npm run cy-run'
+                bat label: 'Install npm Package', script: 'npm install'
+                bat label: 'Install npm Package', script: 'npm run cy-run'
                 echo 'tested successfully'
             }
         }
