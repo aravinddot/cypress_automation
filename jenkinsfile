@@ -13,21 +13,18 @@ pipeline {
         }
         stage('deploy') {
             steps {
-                //bat label: 'Install npm Package', script: 'npm install'
                 bat label: 'Deploy the Application', script: 'npm run cy-sanity'
                 echo 'deploy successfully'
             }
         }
         stage('test') {
             steps {
-                //bat label: 'Install npm Package', script: 'npm install'
-                bat label: 'Run all testcases', script: 'npm run cy-run'
+                bat label: 'Run all testcases', script: 'npm run cy-parallel'
                 echo 'tested successfully'
             }
         }
         stage('release') {
             steps {
-                //bat label: 'Install npm Package', script: 'npm install'
                 bat label: 'Deploy the Application', script: 'npm run cy-apiTest'
                 echo 'release successfully'
             }
