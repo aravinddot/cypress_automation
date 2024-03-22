@@ -1,5 +1,6 @@
 pipeline {
     agent any
+    tools {nodejs "Node12"}
     stages {
         stage('build') {
             steps {
@@ -13,7 +14,10 @@ pipeline {
         }
         stage('test') {
             steps {
-                echo 'deploy successfully'
+
+                sh 'npm install'
+                sh 'npm run cy-run'
+                echo 'tested successfully'
             }
         }
         stage('release') {
