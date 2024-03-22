@@ -3,24 +3,33 @@ pipeline {
     stages {
         stage('build') {
             steps {
+                bat label: 'Install npm Package', script: 'npm install'
+                set NO_COLOR=1
+                bat label: 'Build the Application', script: 'npm run cy-login'
                 echo 'build successfully'
             }
         }
         stage('deploy') {
             steps {
+                //bat label: 'Install npm Package', script: 'npm install'
+                set NO_COLOR=1
+                bat label: 'Deploy the Application', script: 'npm run cy-sanity'
                 echo 'deploy successfully'
             }
         }
         stage('test') {
             steps {
-
-                bat label: 'Install npm Package', script: 'npm install'
-                bat label: 'Install npm Package', script: 'npm run cy-run'
+                //bat label: 'Install npm Package', script: 'npm install'
+                set NO_COLOR=1
+                bat label: 'Run all testcases', script: 'npm run cy-run'
                 echo 'tested successfully'
             }
         }
         stage('release') {
             steps {
+                //bat label: 'Install npm Package', script: 'npm install'
+                set NO_COLOR=1
+                bat label: 'Deploy the Application', script: 'npm run cy-apiTest'
                 echo 'release successfully'
             }
         }
