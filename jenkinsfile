@@ -1,9 +1,9 @@
 pipeline {
     agent any
+     options {
+    ansiColor('xterm')
+  }
     stages {
-        options {
-        ansiColor('xterm')
-        }
         stage('build') {
             steps {
                 bat label: 'Install npm Package', script: 'npm install'
