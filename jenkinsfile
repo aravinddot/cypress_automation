@@ -25,7 +25,7 @@ pipeline {
         }
         stage('release') {
             steps {
-                bat label: 'Deploy the Application', script: 'npm run cy-login'
+                bat label: 'Release the Application Successfully', script: 'npm run cy-login'
                 echo 'release successfully'
             }
         }
