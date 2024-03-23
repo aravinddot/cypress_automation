@@ -6,14 +6,16 @@
   "scripts": {
     "cy-open": "cypress open",
     "cy-run": "cypress run",
-    "cy-regressionAll": "cypress run --spec src/feature/*.feature",
+    "cy-run:chrome": "cypress run --browser chrome",
+    "cy-regressionAll": "cypress run --browser chrome --spec src/feature/*.feature",
     "cy-login": "cypress run --browser chrome --spec src/feature/login.feature",
     "cy-sanity": "cypress run --browser chrome --spec src/feature/sanity.feature",
     "cy-regression": "cypress run --browser chrome --spec src/feature/homepage.feature",
     "cy-product": "cypress run --browser chrome --spec src/feature/product.feature",
     "cy-apiTest": "cypress run --browser chrome --spec src/feature/apiTestcase.feature",
     "cy-databaseTest": "cypress run --browser chrome --spec src/feature/dataBaseTesting.feature",
-    "cy-parallel": "cypress-parallel -s cy-run --specsDir 'src/feature/*.feature' -t 2 -m false -w 'cypress/support/parallel-weights/parallel-weights.json'"
+    "cy-parallel": "cypress-parallel -s cy-run --specsDir 'src/feature/*.feature' -t 2 -m false -w 'cypress/support/parallel-weights/parallel-weights.json'",
+    "cy-parallelRun": "cypress-parallel -s cy-run:chrome --specsDir 'src/feature/*.feature' -t 2 -m false -w 'cypress/support/parallel-weights/parallel-weights.json'"
   },
   "author": "",
   "license": "ISC",

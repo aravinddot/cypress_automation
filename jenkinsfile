@@ -13,19 +13,19 @@ pipeline {
         }
         stage('deploy') {
             steps {
-                bat label: 'Deploy the Application', script: 'npm run cy-sanity'
+                bat label: 'Deploy the Application', script: 'npm run cy-login'
                 echo 'deploy successfully'
             }
         }
         stage('test') {
             steps {
-                bat label: 'Run all testcases', script: 'npm run cy-parallel'
+                bat label: 'Run all testcases', script: 'npm run cy-parallelRun'
                 echo 'tested successfully'
             }
         }
         stage('release') {
             steps {
-                bat label: 'Deploy the Application', script: 'npm run cy-apiTest'
+                bat label: 'Deploy the Application', script: 'npm run cy-login'
                 echo 'release successfully'
             }
         }
