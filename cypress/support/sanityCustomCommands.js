@@ -1,6 +1,0 @@
-
-
-Cypress.Commands.add('selectCartDynamic', ()=>{
-
-});
-

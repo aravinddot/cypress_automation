@@ -13,9 +13,7 @@
     "cy-regression": "cypress run --browser chrome --spec src/feature/homepage.feature",
     "cy-product": "cypress run --browser chrome --spec src/feature/product.feature",
     "cy-apiTest": "cypress run --browser chrome --spec src/feature/apiTestcase.feature",
-    "cy-databaseTest": "cypress run --browser chrome --spec src/feature/dataBaseTesting.feature",
-    "cy-parallel": "cypress-parallel -s cy-run --specsDir 'src/feature/*.feature' -t 2 -m false -w 'cypress/support/parallel-weights/parallel-weights.json'",
-    "cy-parallelRun": "cypress-parallel -s cy-run:chrome --specsDir 'src/feature/*.feature' -t 2 -m false -w 'cypress/support/parallel-weights/parallel-weights.json'"
+    "cy-databaseTest": "cypress run --browser chrome --spec src/feature/dataBaseTesting.feature"
   },
   "author": "",
   "license": "ISC",
