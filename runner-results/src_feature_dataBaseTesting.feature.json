@@ -1,0 +1,10 @@
+{
+  "suites": 1,
+  "tests": 2,
+  "passes": 2,
+  "pending": 0,
+  "failures": 0,
+  "start": "2024-03-23T05:18:59.637Z",
+  "duration": 389439,
+  "file": "src\\feature\\dataBaseTesting.feature"
+}
